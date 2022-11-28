@@ -25,12 +25,24 @@ export const topicsSlice = createSlice({
             };
             //RETURN NEW TOPIC TO ADD TO STATE
             state.topics[id] = newTopic;
+        },
+        addQuizId: (state, action) => {
+            //DESTRUCTURE ACTION
+            const { id, topicId } = action.payload;
+            //RETURN NEW QUIZ ID TO CORRECT TOPIC
+            return state.topics = {
+                ...state.topics, 
+                [topicId]: {
+                    ...state.topics[topicId],
+                    quizIds: [...state.topics[topicId].quizIds, id]
+                }
+            }
         }
     }
 })
 
 //ACTION CREATORS
-export const { addTopic } = topicsSlice.actions;
+export const { addTopic, addQuizId } = topicsSlice.actions;
 
 //EXPORT TOPICS SELECTOR FOR INTIAL TOPICS STATE 
 export const selectTopics = state => state.topics.topics
