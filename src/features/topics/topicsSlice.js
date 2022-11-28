@@ -30,13 +30,8 @@ export const topicsSlice = createSlice({
             //DESTRUCTURE ACTION
             const { id, topicId } = action.payload;
             //RETURN NEW QUIZ ID TO CORRECT TOPIC
-            return state.topics = {
-                ...state.topics, 
-                [topicId]: {
-                    ...state.topics[topicId],
-                    quizIds: [...state.topics[topicId].quizIds, id]
-                }
-            }
+            console.log(state.topics[topicId])
+            state.topics[topicId].quizIds.push(id)
         }
     }
 })

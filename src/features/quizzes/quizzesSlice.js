@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidV4 } from 'uuid';
+import { addQuizId } from "../topics/topicsSlice";
 
 const initialState = {
     quizzes: {}
@@ -11,22 +12,29 @@ export const quizzesSlice = createSlice({
     reducers: {
         addQuiz: (state, action) => {
             //DESTRUCTURE PAYLOAD
-            const { name, topicId, id } = action.payload;
+            const { name, topicId, id, cardIds } = action.payload;
             //CREATE NEW QUIZ
             const newQuiz = {
                 id,
                 name,
                 topicId,
-                cardIds: [],
+                cardIds,
             };
             //RETURN NEW QUIZ
-            return state.quizzes = {
-                ...state.quizzes,
-                [id]: newQuiz
-            }
+            state.quizzes[id] = newQuiz;
         }
     }
 })
+
+//ADD QUIZ THUNK TO ADD QUIZ AND QUIZ ID IN ORDER 
+export const addQuizThunk = payload => {
+    return (dispatch) => {
+        //ADD QUIZ
+        dispatch(addQuiz(payload));
+        //ADD QUIZ ID
+        dispatch(addQuizId({topicId: payload.topicId, id: payload.id}))
+    }
+}
 
 //ACTION CREATORS
 export const { addQuiz } = quizzesSlice.actions;
