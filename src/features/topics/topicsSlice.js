@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { v4 as uuidv4 } from 'uuid'
 
 //INITIAL STATE
 const initialState = {
@@ -11,20 +12,28 @@ export const topicsSlice = createSlice({
     initialState,
     reducers: {
         addTopic: (state, action) => {
-            state.topics['topics'] = {
-                id: action.payload.id,
-                name: action.payload.name,
-                icon: action.payload.icon,
-            }
+            //DESTRUCTURE ACTION
+            const { name, icon } = action.payload;
+            //CREATE UNIQUE ID
+            const id = uuidv4();
+            //BUILD NEW TOPIC
+            const newTopic = {
+                id,
+                name,
+                icon,
+                quizIds: [],
+            };
+            //RETURN NEW TOPIC TO ADD TO STATE
+            state.topics[id] = newTopic;
         }
     }
 })
 
 //ACTION CREATORS
-const { addTopic } = topicsSlice.actions;
+export const { addTopic } = topicsSlice.actions;
 
 //EXPORT TOPICS SELECTOR FOR INTIAL TOPICS STATE 
-export const topicsSelector = state => state.topics.topics
+export const selectTopics = state => state.topics.topics
 
 //EXPORT REDUCER FOR STORE
 export default topicsSlice.reducer;
